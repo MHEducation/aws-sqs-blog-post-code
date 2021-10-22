@@ -1,3 +1,3 @@
 # aws-sqs-blog-post-code
 
-Full code example for the AWS SQS Blog Post
+Full source for the AWS SQS Blog Post.  This repo contains a Scala source example illustrating how to build a multi-threaded AWS SQS consumer.  
