@@ -16,8 +16,7 @@ resolvers ++= Seq(
   "Central" at "https://repo1.maven.org/maven2/",
   Resolver.typesafeRepo("releases"),
   Resolver.jcenterRepo,
-  Resolver.bintrayRepo("ticofab", "maven"),
-  "Artifactory" at "http://artifactory.mheducation.com/artifactory/libs-release-local/"
+  Resolver.bintrayRepo("ticofab", "maven")
 )
 
 libraryDependencies ++= Seq(
