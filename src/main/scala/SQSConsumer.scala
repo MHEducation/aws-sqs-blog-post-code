@@ -22,12 +22,27 @@ import com.amazonaws.services.sqs.AmazonSQSClientBuilder
  * @param dbConfig
  */
 class SQSConsumer(sqsConfig: SQSConfig, queueURL: String, threadPoolSize: Int) extends Runnable {
+
+  /**
+   * Thread pool for concurrent processing of messages.
+   */
   private val threadPool = new ThreadPool(threadPoolSize)
+
+  /**
+   * Extract queue name from URL
+   */
   private val queueName = queueURL.substring(queueURL.lastIndexOf('/') + 1)
+
+  /**
+   * SQS Client
+   */
   private val sqsClient = AmazonSQSClientBuilder.standard()
     .withRegion(Regions.US_EAST_1)
     .build()
 
+  /**
+   * Set to true to initiate shutdown sequence.
+   */
   private var shutdownFlag = false
 
   def shutdown() = { this.shutdownFlag = true }
@@ -35,7 +50,7 @@ class SQSConsumer(sqsConfig: SQSConfig, queueURL: String, threadPoolSize: Int) e
   /**
    * Create callback to delete queue message upon success.
    *
-   * @param receiptHandle
+   * @param receiptHandle The SQS message receipt handle
    *
    * @return Option type for callback function
    */
@@ -49,8 +64,8 @@ class SQSConsumer(sqsConfig: SQSConfig, queueURL: String, threadPoolSize: Int) e
   /**
    * Create fail callback 
    *
-   * @param jobRequestId
-   * @param receiptHandle
+   * @param jobRequestId  The request ID of the message.
+   * @param receiptHandle The SQS message receipt handle.
    *
    * @return Option type for callback function
    */
@@ -64,7 +79,11 @@ class SQSConsumer(sqsConfig: SQSConfig, queueURL: String, threadPoolSize: Int) e
   }
 
   /**
-   * Main Consumer run loop
+   * Main Consumer run loop performs the following steps.
+   *   Consume messages
+   *   Convert message to Task object
+   *   Submit tasks to the ThreadPool
+   *   Sleep based on the configured poll interval.
    */
   def run(): Unit = {
     while (!this.shutdownFlag) {
@@ -87,8 +106,8 @@ class SQSConsumer(sqsConfig: SQSConfig, queueURL: String, threadPoolSize: Int) e
   /**
    * Convert the list of SQS Message to a list of Task
    *
-   * @param messages
-   * @param result
+   * @param messages List of SQS messages
+   * @param result Accumulator for the result list of Tasks
    *
    * @return Task List
    */
@@ -108,7 +127,7 @@ class SQSConsumer(sqsConfig: SQSConfig, queueURL: String, threadPoolSize: Int) e
   /**
    * Convert an individual SQS Message to a Task
    *
-   * @param message
+   * @param message SQS Message
    *
    * @return Some(task) if a jobRequestId was parsed.
    */
