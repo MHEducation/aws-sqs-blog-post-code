@@ -12,7 +12,7 @@ class ThreadPool(threadPoolSize: Int) {
   /**
    * Submit a list of tasks for execution and wait for completion.
    *
-   * @param tasks
+   * @param tasks List of tasks to submit to thread pool
    */
   def submitTasks(tasks: List[Task], requestTimeoutMinutes: Long): Unit = {
     executor.invokeAll(tasks.asJava, requestTimeoutMinutes, TimeUnit.MINUTES)

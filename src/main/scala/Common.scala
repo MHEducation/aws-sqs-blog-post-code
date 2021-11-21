@@ -4,6 +4,9 @@ import com.fasterxml.jackson.databind.{DeserializationFeature, ObjectMapper}
 import com.fasterxml.jackson.module.scala.DefaultScalaModule
 import com.fasterxml.jackson.module.scala.experimental.ScalaObjectMapper
 
+/**
+ * Some common utilities
+ */
 object Common {
 
   /**
@@ -12,10 +15,16 @@ object Common {
   type Callback = () => Unit
   type FailCallback = String => Unit
 
+  /**
+   * @param message Message to log
+   */
   def log(message: String) {
       println(message)
   }
 
+  /**
+   * For parsing JSON
+   */
   private val jsonMapper = new ObjectMapper with ScalaObjectMapper
 
   jsonMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
