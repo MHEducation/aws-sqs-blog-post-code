@@ -79,11 +79,11 @@ class SQSConsumer(sqsConfig: SQSConfig, queueURL: String, threadPoolSize: Int) e
   }
 
   /**
-   * Main Consumer run loop performs the following steps.
-   *   Consume messages
-   *   Convert message to Task object
-   *   Submit tasks to the ThreadPool
-   *   Sleep based on the configured poll interval.
+   * Main Consumer run loop performs the following steps:
+   *   1. Consume messages
+   *   2. Convert message to Task objects
+   *   3. Submit tasks to the ThreadPool
+   *   4. Sleep based on the configured poll interval.
    */
   def run(): Unit = {
     while (!this.shutdownFlag) {
