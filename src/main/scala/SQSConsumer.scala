@@ -94,13 +94,10 @@ class SQSConsumer(sqsConfig: SQSConfig, queueURL: String, threadPoolSize: Int) e
 
       threadPool.submitTasks(tasks, sqsConfig.requestTimeoutMinutes)
 
-      log(s"SQSConsumer for queue: $queueName sleeping for %d seconds".
-        format(sqsConfig.pollIntervalSeconds))
       Thread.sleep(sqsConfig.pollIntervalSeconds * 1000)
     }
 
     threadPool.shutdown()
-    log((s"SQSConsumer queue: $queueName shutting down..."))
   }
 
   /**
