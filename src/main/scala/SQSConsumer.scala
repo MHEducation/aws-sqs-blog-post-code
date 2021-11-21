@@ -1,10 +1,14 @@
 import java.sql.SQLException
+
+import scala.collection.JavaConverters._
+
 import com.amazonaws.services.sqs.model.Message
 import com.amazonaws.services.sqs.model.{GetQueueAttributesRequest, ReceiveMessageRequest}
 
 import scala.collection.JavaConversions._
 import Common.log
 import Common.{Callback, FailCallback}
+
 import com.amazonaws.regions.Regions
 import com.amazonaws.services.sqs.AmazonSQSClientBuilder
 
@@ -67,8 +71,6 @@ class SQSConsumer(sqsConfig: SQSConfig, queueURL: String, threadPoolSize: Int) e
       val receiveMessageResult = sqsClient.receiveMessage(new ReceiveMessageRequest(queueURL)
         .withMaxNumberOfMessages(threadPoolSize))
       val messages = receiveMessageResult.getMessages
-
-      import scala.collection.JavaConverters._
       val tasks = getTasks(messages.asScala.toList)
 
       threadPool.submitTasks(tasks, sqsConfig.requestTimeoutMinutes)
